@@ -14,7 +14,7 @@ jobs:
           submodules: false # Avoid nested submodule issues
           path: source
           # Use GitHub PAT stored in secrets
-          token: ${{ secrets.GITHUB_PAT }} # For private GitHub forks
+          # token: ${{ secrets.GITHUB_PAT }} # For private GitHub forks
 
       - name: Clean GitHub Workflows
         run: |
