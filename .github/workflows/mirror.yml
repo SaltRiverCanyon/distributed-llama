@@ -23,10 +23,10 @@ jobs:
 
       - name: Push to GitLab
         run: |
-          git config --global user.email "ci@example.com"
+          git config --global user.email "admin@saltrivercanyon.com"
           git config --global user.name "CI Bot"
           cd source
-          git remote add gitlab https://your-gitlab-token@git.saltrivercanyon.com/yournamespace/yourrepo.git
+          git remote add gitlab https://$GITLAB_TOKEN@git.saltrivercanyon.com/SaltRiverCanyon/distributed-llama.git
           git push gitlab --force main  # Mirror 'main' branch
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_PAT }}
