@@ -2,24 +2,23 @@ name: GitHub to GitLab Mirroring
 on:
   push:
     branches:
-      - main # Only sync changes to 'main' branch
+      - main
 
 jobs:
   mirror-to-gitlab:
-    runs-on: ubuntu-latest # Avoid Windows-specific line endings here
+    runs-on: ubuntu-latest
     steps:
-      - name: Clone GitHub Fork
+      - name: Clone GitHub Fork (Full History)
         uses: actions/checkout@v3
         with:
-          submodules: false # Avoid nested submodule issues
+          submodules: false
           path: source
-          # Use GitHub PAT stored in secrets
-          # token: ${{ secrets.GITHUB_PAT }} # For private GitHub forks
+          fetch-depth: 0 # Critical: Fetch full history instead of shallow clone
 
       - name: Clean GitHub Workflows
         run: |
-          rm -rf source/.github  # Remove original GitHub CI
-          rm -rf source/.gitmodules  # Remove submodules if not needed
+          rm -rf source/.github
+          rm -rf source/.gitmodules
 
       - name: Push to GitLab
         run: |
@@ -27,6 +26,6 @@ jobs:
           git config --global user.name "CI Bot"
           cd source
           git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_PAT }}@git.saltrivercanyon.com/WaterPistol/distributed-llama.git
-          git push gitlab --force main  # Mirror 'main' branch
+          git push gitlab --force main
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_PAT }}
